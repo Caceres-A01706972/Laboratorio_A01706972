@@ -1,23 +1,29 @@
-m = [[12,7,3],
-    [4,5,6],
-    [7,8,9]]
+import numpy as np
 
-kernel = [[5,8,1],
-        [6,1,2],
-        [4,1,1]]
+def convolucion(fragmento, kernel):
+    frag_fila, frag_columna = fragmento.shape
+    resultado = 0
+    for fila in range(frag_fila):
+        for columna in range(frag_columna):
+            resultado += fragmento[fila, columna] * kernel[fila, columna]
+    return resultado
 
-resultado = [[0,0,0],
-            [0,0,0],
-            [0,0,0]]
+imagen = np.array([[4, 0, 2, 1, 8, 3],
+                  [11, 2, 2, 1, 5, 9],
+                  [3, 3, 1, 6, 6, 8],
+                  [1, 1, 7, 7, 2, 4],
+                  [1, 3, 2, 1, 2, 3]])
 
-#Iteramos sobre las filas de m
-for i in range(len(m)):
-    #Iteramos sobre las columnas de kernel
-    for j in range(len(kernel[0])):
-        #Iteramos sobre las filas de kernel
-        for k in range(len(kernel)):
-            resultado[i][j] += m[i][k] * kernel[k][j]
+kernel = np.array([[1, 1, 1],
+                   [0, 0, 0],
+                   [2, 10, 3]])
 
-for r in resultado:
-    print(r)
+imagen_fila, imagen_columna = imagen.shape
+kernel_fila, kernel_columna = kernel.shape
 
+final = np.zeros(imagen.shape)
+
+for fila in range(imagen_fila):
+    for columna in range(imagen_columna):
+        final[fila, columna] = convolucion(imagen[fila:fila + kernel_fila,columna:columna + kernel_columna], kernel)
+print(final)
